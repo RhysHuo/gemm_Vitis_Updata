@@ -374,7 +374,7 @@ int main(int argc, char* argv[]) {
             std::cout << "Failed to program device[" << i << "] with xclbin file!\n";
         } else {
             std::cout << "Device[" << i << "]: program successful!\n";
-            OCL_CHECK(err, krnl = cl::Kernel(program, "kernelMatrixmult", &err));
+            OCL_CHECK(err, krnl = cl::Kernel(program, "mmult_top", &err));
             valid_device = true;
             break; // we break because we found a valid device
         }
@@ -404,19 +404,16 @@ int main(int argc, char* argv[]) {
     OCL_CHECK(err, cl::Buffer buffer_array_c(context, CL_MEM_WRITE_ONLY | CL_MEM_ALLOC_HOST_PTR , SN * SP * sizeof(DTYPE_OUT), NULL, &err));
 	
 	ap_uint<2> S_ternary = atoi(argv[3]);
-	int S_begin = 0;
-	int S_end = SN;
 
 	// Set the kernal argument
     int narg = 0;
 	OCL_CHECK(err, err = krnl.setArg(narg++, S_ternary));
-    OCL_CHECK(err, err = krnl.setArg(narg++, buffer_array_a));
-    OCL_CHECK(err, err = krnl.setArg(narg++, buffer_array_b));
-    OCL_CHECK(err, err = krnl.setArg(narg++, buffer_array_c));
+	OCL_CHECK(err, err = krnl.setArg(narg++, SN));
     OCL_CHECK(err, err = krnl.setArg(narg++, SM));
     OCL_CHECK(err, err = krnl.setArg(narg++, SP));
-    OCL_CHECK(err, err = krnl.setArg(narg++, S_begin));
-    OCL_CHECK(err, err = krnl.setArg(narg++, S_end));
+	OCL_CHECK(err, err = krnl.setArg(narg++, buffer_array_a));
+    OCL_CHECK(err, err = krnl.setArg(narg++, buffer_array_b));
+    OCL_CHECK(err, err = krnl.setArg(narg++, buffer_array_c));
 
     std::ifstream myFile(argv[2]);
     DTYPE* array_a;
