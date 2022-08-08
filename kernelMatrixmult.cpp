@@ -86,6 +86,12 @@ void mmult_accel(ap_uint<2> ternary, int M, DTYPE* A, DTYPE B[B_HEIGHT][B_WIDTH_
 
 void mmult_top(ap_uint<2> ternary, int N, int M, int P, DTYPE* A, DTYPE* B, DTYPE_OUT* C)
 {
+	#pragma HLS DATAFLOW
+	
+	#pragma HLS INTERFACE m_axi port=A offset=slave bundle=gmem0
+	#pragma HLS INTERFACE m_axi port=B offset=slave bundle=gmem1
+	#pragma HLS INTERFACE m_axi port=C offset=slave bundle=gmem0
+		
 	DTYPE A_accel[A_WIDTH], B_accel[B_HEIGHT][B_WIDTH_BLOCK];
 	DTYPE_OUT C_accel[B_WIDTH_BLOCK];
     #pragma HLS array_partition variable=A_accel type=block factor= 16 dim=1
@@ -95,8 +101,9 @@ void mmult_top(ap_uint<2> ternary, int N, int M, int P, DTYPE* A, DTYPE* B, DTYP
 	for (int B_index = 0; B_index < P/B_WIDTH_BLOCK; B_index++) {
 
 		for (int i = 0; i < M; i++) {
-
+			#pragma HLS PIPELINE
 		    for (int j = 0; j < B_WIDTH_BLOCK; j++) {
+				#pragma HLS UNROLL
 			    B_accel[i][j] = B[i*P+B_index*B_WIDTH_BLOCK+j];
 				//std::cout << i << " " << j << std::endl;
 			}
@@ -104,43 +111,20 @@ void mmult_top(ap_uint<2> ternary, int N, int M, int P, DTYPE* A, DTYPE* B, DTYP
 
 		for (int A_index = 0; A_index < N; A_index++) {
             #pragma HLS loop_tripcount min=64 max=64 avg=64
-
             for (int j = 0; j < M; j++) {
+				#pragma HLS PIPELINE
                 A_accel[j] = A[A_index*M+j];
             }
 
             mmult_accel(ternary, M, A_accel, B_accel, C_accel);
 
             for (int i = 0; i < C_HEIGHT_BLOCK; i++) {
-                for (int j = 0; j < C_WIDTH_BLOCK; j++) {
+                for (int j = 0; j < C_WIDTH_BLOCK; j++) 
+					#pragma HLS UNROLL
                     C[(i+A_index*A_HEIGHT_BLOCK)*P+j+B_index*B_WIDTH_BLOCK] = C_accel[i*C_WIDTH_BLOCK+j];
                     //std::cout << "C is " << C[(i+A_index*A_HEIGHT_BLOCK)*P+j+B_index*B_WIDTH_BLOCK] << std::endl;
                 }
             }
 	    }
 	}
-}
-
-void kernelMatrixmult(
-ap_uint<2> ternary,
-DTYPE* array_a,
-DTYPE* array_b,
-DTYPE_OUT* array_c,
-int M,
-int P,
-int begin,
-int end)
-{
-
-    //int k;
-    int line_count = end-begin;
-    DTYPE *array_temp_a = array_a + begin*M;
-    DTYPE *array_temp_b = array_b;
-    //DTYPE_OUT *array_temp_c = array_c + begin*M;
-    //mmult_top1(array_temp_a, array_temp_b, array_temp_c, line_count);
-    // #pragma SDS resource(1)
-    //mmult_top(ternary, line_count, M, P, array_temp_a, array_temp_b, array_temp_c);
-	mmult_top(ternary, line_count, M, P, array_temp_a, array_temp_b, array_c);
-	//std::cout << " kernelMatrixmult has completed " << std::endl;
-
 }
