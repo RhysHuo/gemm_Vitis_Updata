@@ -5,9 +5,7 @@
 #include <algorithm>
 
 #include "xcl2.hpp"
-#include <CL/cl.h>
-#include <CL/cl2.hpp>
-#include "kernelMatrixmult.h"
+#include "matrix_mult.h"
 
 //2022.07.05 13:36
 
