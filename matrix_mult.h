@@ -55,20 +55,11 @@ typedef std::vector<int> vi;
 
 
 void mmult_accel(ap_uint<2> ternary, int M, DTYPE* A, DTYPE B[B_HEIGHT][B_WIDTH_BLOCK], DTYPE_OUT* C);
-//#pragma SDS data access_pattern(A:SEQUENTIAL)
 
+extern "C"{
+	void mmult_top(ap_uint<2> ternary,int N, int M, int P, DTYPE* A, DTYPE* B, DTYPE_OUT* C);
+}
 
-//#pragma SDS data zero_copy(B[0:B_HEIGHT*B_WIDTH], C[0:A_HEIGHT*B_WIDTH])
-//#pragma SDS data copy(A[0:A_HEIGHT*A_WIDTH])
-//#pragma SDS data access_pattern(A:RANDOM)
-//#pragma SDS data zero_copy(A[0:A_HEIGHT*A_WIDTH],B[0:B_HEIGHT*B_WIDTH], C[0:A_HEIGHT*B_WIDTH])
-//#pragma SDS data sys_port(A:AFI,B:AFI,C:AFI)
-//#pragma SDS data access_pattern(A:ACP;B:ACP;C:ACP)
-//#pragma SDS data zero_copy(A[0:line_count*A_WIDTH],B[0:B_HEIGHT*B_WIDTH], C[0:A_HEIGHT*B_WIDTH])
-void mmult_top(ap_uint<2> ternary,int N, int M, int P, DTYPE* A, DTYPE* B, DTYPE_OUT* C);
-//int mmult_top2(int A[A_WIDTH*A_HEIGHT], int B[B_HEIGHT*B_WIDTH], int C[C_HEIGHT*C_WIDTH],int line_count);
-//int mmult_top3(int A[A_WIDTH*A_HEIGHT], int B[B_HEIGHT*B_WIDTH], int C[C_HEIGHT*C_WIDTH],int line_count);
-//int mmult_top4(int A[A_WIDTH*A_HEIGHT], int B[B_HEIGHT*B_WIDTH], int C[C_HEIGHT*C_WIDTH],int line_count);
 
 #endif //__MATRIX_MULT_H__
 
