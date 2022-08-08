@@ -103,7 +103,7 @@ void mmult_top(ap_uint<2> ternary, int N, int M, int P, DTYPE* A, DTYPE* B, DTYP
 		for (int i = 0; i < M; i++) {
 			#pragma HLS PIPELINE
 		    for (int j = 0; j < B_WIDTH_BLOCK; j++) {
-				#pragma HLS UNROLL
+				//#pragma HLS UNROLL
 			    B_accel[i][j] = B[i*P+B_index*B_WIDTH_BLOCK+j];
 				//std::cout << i << " " << j << std::endl;
 			}
