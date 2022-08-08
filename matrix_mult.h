@@ -53,7 +53,7 @@ typedef unsigned long u32;
 typedef std::vector<int> vi;
 
 
-
+void mxv(ap_uint<2> ternary, int M, DTYPE *A, DTYPE_OUT* C, DTYPE B[B_HEIGHT][B_WIDTH_BLOCK]);
 void mmult_accel(ap_uint<2> ternary, int M, DTYPE* A, DTYPE B[B_HEIGHT][B_WIDTH_BLOCK], DTYPE_OUT* C);
 
 extern "C"{
