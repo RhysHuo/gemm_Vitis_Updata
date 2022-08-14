@@ -7,7 +7,6 @@
 #include "xcl2.hpp"
 #include "matrix_mult.h"
 
-//2022.07.05 13:36
 
 #define NUM_TESTS 1
 
@@ -295,11 +294,11 @@ void mmult_golden_byte(DTYPE *A,  DTYPE *B, DTYPE_OUT *C)
 static int result_check(DTYPE_OUT *C, DTYPE_OUT *C_sw)
 {
 	for (int i = 0; i < SN * SP; i++) {
-		//if (C_sw[i] != C[i]) {
+		if (C_sw[i] != C[i]) {
 			std::cout 	<< "Mismatch: data index= " << i << " golden = " << C_sw[i]
 						<< ", kernel = " << C[i] << std::endl;
-		//	return 1;
-		//}
+			return 1;
+		}
 	}
     std::cout 	<< "TEST PASSED !" <<  std::endl;
 	return 0;
