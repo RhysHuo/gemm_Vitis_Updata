@@ -100,7 +100,7 @@ void mmult_top(ap_uint<2> ternary, int N, int M, int P, DTYPE* A, DTYPE* B, DTYP
 
 	for (int B_index = 0; B_index < P/B_WIDTH_BLOCK; B_index++) {
 		
-		//#pragma HLS DATAFLOW
+		#pragma HLS DATAFLOW
 		/*
 		for (int i = 0; i < M; i++) {
 			#pragma HLS PIPELINE
@@ -121,7 +121,7 @@ void mmult_top(ap_uint<2> ternary, int N, int M, int P, DTYPE* A, DTYPE* B, DTYP
 		}
 
 		for (int A_index = 0; A_index < N; A_index++) {
-			#pragma HLS DATAFLOW
+			//#pragma HLS DATAFLOW
             //#pragma HLS loop_tripcount min=64 max=64 avg=64
             for (int j = 0; j < M; j++) {
 				#pragma HLS PIPELINE
