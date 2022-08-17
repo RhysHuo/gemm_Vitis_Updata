@@ -86,7 +86,6 @@ void mmult_accel(ap_uint<2> ternary, int M, DTYPE* A, DTYPE B[B_HEIGHT][B_WIDTH_
 
 void mmult_top(ap_uint<2> ternary, int N, int M, int P, DTYPE* A, DTYPE* B, DTYPE_OUT* C)
 {
-	#pragma HLS DATAFLOW
 	
 	#pragma HLS INTERFACE m_axi port=A offset=slave bundle=gmem0
 	#pragma HLS INTERFACE m_axi port=B offset=slave bundle=gmem1
@@ -94,22 +93,35 @@ void mmult_top(ap_uint<2> ternary, int N, int M, int P, DTYPE* A, DTYPE* B, DTYP
 		
 	DTYPE A_accel[A_WIDTH], B_accel[B_HEIGHT][B_WIDTH_BLOCK];
 	DTYPE_OUT C_accel[B_WIDTH_BLOCK];
-    #pragma HLS array_partition variable=A_accel type=block factor= 16 dim=1
-	#pragma HLS array_partition variable=B_accel type=block factor= 16 dim=2
+    #pragma HLS array_partition variable=A_accel type=block factor= 32 dim=1
+	#pragma HLS array_partition variable=B_accel type=block factor= 32 dim=2
 	#pragma HLS array_partition variable=C_accel type=complete
+	
 
 	for (int B_index = 0; B_index < P/B_WIDTH_BLOCK; B_index++) {
-
+		
+		#pragma HLS DATAFLOW
+		/*
 		for (int i = 0; i < M; i++) {
 			#pragma HLS PIPELINE
 		    for (int j = 0; j < B_WIDTH_BLOCK; j++) {
-				//#pragma HLS UNROLL
+				#pragma HLS UNROLL
 			    B_accel[i][j] = B[i*P+B_index*B_WIDTH_BLOCK+j];
+				//std::cout << i << " " << j << std::endl;
+			}
+		}
+		*/
+		
+		for (int i = 0; i < B_WIDTH_BLOCK; i++) {
+		    for (int j = 0; j < M; j++) {
+				#pragma HLS PIPELINE
+			    B_accel[j][i] = B[j*P+B_index*B_WIDTH_BLOCK+i];
 				//std::cout << i << " " << j << std::endl;
 			}
 		}
 
 		for (int A_index = 0; A_index < N; A_index++) {
+			#pragma HLS DATAFLOW
             #pragma HLS loop_tripcount min=64 max=64 avg=64
             for (int j = 0; j < M; j++) {
 				#pragma HLS PIPELINE
