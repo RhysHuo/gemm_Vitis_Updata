@@ -36,7 +36,7 @@ typedef ap_int<DTYPE_LENGTH> DTYPE;
 typedef ap_int<16> DTYPE_OUT;
 
 #define A_HEIGHT_BLOCK  1// 4096 //(512/4)
-#define B_WIDTH_BLOCK 64 //32 //64 //64 //128 // 64 //64 //64 //8//8// //16//32//1//32//1//32//1// 1//32//(128/4)
+#define B_WIDTH_BLOCK 128 //32 //64 //64 //128 // 64 //64 //64 //8//8// //16//32//1//32//1//32//1// 1//32//(128/4)
 
 /*
  A_HEIGHT_BLOCK  is for software part data partitioning due to the limitation in 
