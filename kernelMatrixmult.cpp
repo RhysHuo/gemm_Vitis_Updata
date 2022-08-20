@@ -93,8 +93,8 @@ void mmult_top(ap_uint<2> ternary, int N, int M, int P, DTYPE* A, DTYPE* B, DTYP
 		
 	DTYPE A_accel[A_WIDTH], B_accel[B_HEIGHT][B_WIDTH_BLOCK];
 	DTYPE_OUT C_accel[B_WIDTH_BLOCK];
-    #pragma HLS array_partition variable=A_accel type=block factor= 32 dim=1
-	#pragma HLS array_partition variable=B_accel type=block factor= 32 dim=2
+    #pragma HLS array_partition variable=A_accel type=block factor= 64 dim=1
+	#pragma HLS array_partition variable=B_accel type=block factor= 64 dim=2
 	#pragma HLS array_partition variable=C_accel type=complete
 	
 
