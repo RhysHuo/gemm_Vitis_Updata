@@ -1,7 +1,6 @@
 if (argc != 7) {
 	return EXIT_FAILURE;
 }
-
 platform.getDevices(CL_DEVICE_TYPE_ACCELERATOR, &devices);
 	
 std::ifstream bin_file(xclbinFilename, std::ifstream::binary);
@@ -34,6 +33,6 @@ q.enqueueMigrateMemObjects({buffer_array_c}, CL_MIGRATE_MEM_OBJECT_HOST);
 mmult_golden_byte(array_a, array_b, array_c_sw);
 
 if (result_check(array_c, array_c_sw))
-	return 1;
+    return 1;
 
 q.enqueueUnmapMemObject(buffer_array, array);
