@@ -2,9 +2,9 @@
 
 The kernel is reproduced from https://github.com/eejlny/gemm_spmm
 
-The host program is contained in host.cpp. The xcl2.hpp should be included when you build host.exe.
+The host program is contained in `host.cpp`. The `xcl2.hpp` should be included when you build host.exe.
 
-The kernel is contained in kernelMatrixmult.cpp and matrix_mult.h in which multiple parameters are defined.
+The kernel is contained in `kernelMatrixmult.cpp` and `matrix_mult.h` in which multiple parameters are defined.
 
 ## Before You Start
 
@@ -43,9 +43,9 @@ One of matrices is read from data file so you should have this data file in the 
 You can run this application using the following command:
 
 ```
-./host.exe kernelMatrixmult.xclbin <data file> <precision controller> <SN> <SM> <SP>
+./host.exe kernelMatrixmult.xclbin <data_file> <precision_controller> <SN> <SM> <SP>
 ```
-You can choose the precision `<precision controller>` of data and set any matrix size `<SN>` `<SM>` `<SP>` up to the maximum `MAX_N`  `MAX_M`  `MAX_P`.
+You can choose the precision `<precision_controller>` of data and set any matrix size `<SN>` `<SM>` `<SP>` up to the maximum `MAX_N`  `MAX_M`  `MAX_P`.
 
 Precision controller : `0` for 8 bits, `1` for 2 bits, `2` for 4 bits.
 
