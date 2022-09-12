@@ -47,6 +47,6 @@ You can run this application using the following command:
 ```
 You can choose the precision `<precision controller>` of data and set any matrix size `<SN>` `<SM>` `<SP>` up to the maximum `MAX_N`  `MAX_M`  `MAX_P`.
 
-<precision controller>: `0` for 8 bits, `1` for 2 bits, `2` for 4 bits.
+precision controller: `0` for 8 bits, `1` for 2 bits, `2` for 4 bits.
 
 Matrix size: `A: SN*SM` `B: SM*SP` `C: SN*SP`
