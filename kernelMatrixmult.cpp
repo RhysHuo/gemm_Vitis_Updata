@@ -8,7 +8,7 @@
 typedef unsigned long u32;
 
 const int BLOCK=B_WIDTH_BLOCK;   //BLOCK should be less than B_WIDTH_BLOCK
-                                 //B_WIDTH_BLOCK 是每个block的宽度（列数）
+                                 
 const int STEP=1;
 
 void mxv(ap_uint<2> ternary, int M, DTYPE *A, DTYPE_OUT* C, DTYPE B[B_HEIGHT][B_WIDTH_BLOCK])  {
